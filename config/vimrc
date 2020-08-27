@@ -1,11 +1,12 @@
 set hlsearch
+set hidden
+set updatetime=100
+set shortmess+=c
 let mapleader=" "
 exec "nohlsearch"
 noremap ; :
 noremap <LEADER><CR> :nohlsearch<CR>
-set smartindent
 set backspace=2
-set autoindent
 syntax on
 set relativenumber
 set ruler
@@ -14,12 +15,17 @@ set nu
 set bg=dark
 set fileformats=unix,dos
 set fileformat=unix
+set noexpandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set autoindent 
 set smartindent
 set cindent
 set fileencoding=utf-8
 set encoding=utf-8
 set showmatch 
+
 set matchtime=2 
 set ignorecase
 set incsearch
@@ -46,7 +52,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/taglist.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'godlygeek/tabular'
-Plugin 'jiangmiao/auto-pairs'
 Plugin 'majutsushi/tagbar'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'luochen1990/rainbow'
@@ -56,11 +61,12 @@ Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'Yggdroot/indentLine'
 Plugin 'Align'
 Plugin 'tpope/vim-surround'
-Plugin 'c.vim'
 Plugin 'lilydjwg/Colorizer'
+Plugin 'jiangmiao/auto-pairs'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
+
 
 let g:tagbar_ctags_bin = 'ctags' 
 let g:tagbar_width     = 30     
@@ -225,7 +231,7 @@ vmap { S{
 vmap } S}
 vmap ] S]
 vmap ) S)
-vmap > S>
+vmap < S<
 
 
 
@@ -238,7 +244,6 @@ Plug 'mbbill/undotree/'
 Plug 'jaxbot/semantic-highlight.vim'
 Plug 'tweekmonster/braceless.vim'
 Plug 'dart-lang/dart-vim-plugin'
-Plug 'Chiel92/vim-autoformat'
 Plug 'jceb/vim-orgmode', {'for': ['vim-plug', 'org']}
 Plug 'ryanoasis/vim-devicons'
 Plug 'kevinhwang91/rnvimr', {'do': 'make sync'}
@@ -249,6 +254,43 @@ Plug 'vim-scripts/mru.vim'
 call plug#end()
 
 
+
+"coc--------------------------------------
+let g:coc_global_extensions = [
+    \ 'coc-html',
+	\ 'coc-json',
+	\ 'coc-lists',
+	\ 'coc-css',
+	\ 'coc-vimlsp',
+    \ 'coc-tsserver']
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+inoremap <silent><expr> <c-o> coc#refresh()
+nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
+nmap <silent> <LEADER>= <Plug>(coc-diagnostic-next)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nnoremap <silent> <LEADER>h :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+autocmd CursorHold * silent call CocActionAsync('highlight')
+nnoremap <silent> ,y  :<C-u>CocList -A --normal yank<cr>
+"----------------------------------
 
 noremap <C-p> :FZF<CR>
 noremap <C-f> :Ag<CR>
@@ -290,7 +332,6 @@ let g:go_highlight_types = 1
 let g:go_highlight_variable_assignments = 0
 let g:go_highlight_variable_declarations = 0
 
-nnoremap \f :Autoformat<CR>
 
 if (has("termguicolors"))
  set termguicolors
@@ -299,9 +340,6 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 syntax enable
 let g:lightline = { 'colorscheme': 'tender' }
 
-
-autocmd CursorHold * silent call CocActionAsync('highlight')
-nnoremap <silent> ,y  :<C-u>CocList -A --normal yank<cr>
 
 "解决coc.nvim大文件卡死状况
 let g:trigger_size = 0.5 * 1048576
@@ -324,3 +362,7 @@ function! CocTimerStart(timer)
     exec "CocStart"
 endfunction
 call timer_start(500,'CocTimerStart',{'repeat':1})
+
+
+
+
