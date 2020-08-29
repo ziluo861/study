@@ -156,7 +156,6 @@ Plug 'bling/vim-bufferline'
 Plug 'bpietravalle/vim-bolt'
 Plug 'theniceboy/eleline.vim'
 Plug 'RRethy/vim-illuminate'
-Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'ajmwagar/vim-deus'
 Plug 'chrisbra/Colorizer'
 Plug 'jaxbot/semantic-highlight.vim'
