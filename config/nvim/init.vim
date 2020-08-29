@@ -21,7 +21,8 @@ noremap <LEADER><CR> :nohlsearch<CR>
 set backspace=2
 "syntax on
 set relativenumber
-set ruler
+"set ruler
+set scrolloff=4
 set showmode
 set nu
 "set bg=dark
@@ -47,6 +48,7 @@ set wildmenu
 set showcmd
 set smartcase
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+set virtualedit=block
 "filetype plugin on
 "filetype indent on
 "filetype off                  " required
@@ -105,9 +107,9 @@ let g:cpp_concepts_highlight = 1
 nmap <F2> :MRU<cr>
 
 "indentLine
-let g:indentLine_char='┆'
-let g:indentLine_enabled = 1
-let g:indentLine_color_gui = '#A4E57E'
+"let g:indentLine_char='┆'
+"let g:indentLine_enabled = 1
+"let g:indentLine_color_gui = '#A4E57E'
 
 "nerdcommenter
 let g:NERDCompactSexyComs        = 1
@@ -135,11 +137,10 @@ vmap < S<
 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'mhinz/vim-startify'
-Plug 'junegunn/fzf.vim'
+"Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'mbbill/undotree/'
-Plug 'jaxbot/semantic-highlight.vim'
-Plug 'dart-lang/dart-vim-plugin'
+"Plug 'jaxbot/semantic-highlight.vim'
 Plug 'jceb/vim-orgmode', {'for': ['vim-plug', 'org']}
 Plug 'ryanoasis/vim-devicons'
 Plug 'machakann/vim-highlightedyank'
@@ -149,23 +150,68 @@ Plug 'bling/vim-bufferline'
 Plug 'bpietravalle/vim-bolt'
 Plug 'theniceboy/eleline.vim'
 Plug 'RRethy/vim-illuminate'
+Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'ajmwagar/vim-deus'
+Plug 'skywind3000/asynctasks.vim'
+Plug 'skywind3000/asyncrun.vim'
 Plug 'chrisbra/Colorizer'
 Plug 'jaxbot/semantic-highlight.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
-"Plug 'majutsushi/tagbar'
-"Plug 'nathanaelkane/vim-indent-guides'
 Plug 'luochen1990/rainbow'
 Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mg979/vim-xtabline'
 Plug 'easymotion/vim-easymotion'
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'liuchengxu/vista.vim'
+"markdown
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
+Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
+Plug 'dkarter/bullets.vim'
+Plug 'kevinhwang91/rnvimr'
+Plug 'pechorin/any-jump.vim'
 call plug#end()
+" === vim-instant-markdown
+let g:instant_markdown_slow = 0
+let g:instant_markdown_autostart = 0
+" let g:instant_markdown_open_to_the_world = 1
+" let g:instant_markdown_allow_unsafe_content = 1
+" let g:instant_markdown_allow_external_content = 0
+" let g:instant_markdown_mathjax = 1
+let g:instant_markdown_autoscroll = 1
+
+" === vim-table-mode
+noremap <LEADER>tm :TableModeToggle<CR>
+"let g:table_mode_disable_mappings = 1
+let g:table_mode_cell_text_object_i_map = 'k<Bar>'
+
+" === Bullets.vim
+let g:bullets_enabled_file_types = [
+			\ 'markdown',
+			\ 'text',
+			\ 'gitcommit',
+			\ 'scratch'
+			\]
+
+" === vim-markdown-toc
+"let g:vmt_auto_update_on_save = 0
+"let g:vmt_dont_insert_fence = 1
+let g:vmt_cycle_list_item_markers = 1
+let g:vmt_fence_text = 'TOC'
+let g:vmt_fence_closing_text = '/TOC'
+
+" === AsyncRun
+noremap gp :AsyncRun git push<CR>
+
+
+" === AsyncTasks
+let g:asyncrun_open = 6
+
+
+
 
 "vim-deus-----
 set termguicolors
@@ -180,6 +226,8 @@ let g:airline_powerline_fonts = 0
 "illuminated---
 let g:Illuminate_delay = 750
 hi illuminatedWord cterm=undercurl gui=undercurl
+"let g:Hexokinase_highlighters = ['virtual']
+
 
 "xtabline-----
 let g:xtabline_settings = {}
@@ -187,7 +235,7 @@ let g:xtabline_settings.enable_mappings = 0
 let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
 let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
-noremap to :XTabCycleMode<CR>
+"noremap to :XTabCycleMode<CR>
 noremap \p :echo expand('%:p')<CR>
 
 
@@ -199,9 +247,11 @@ let g:coc_global_extensions = [
 	\ 'coc-css',
 	\ 'coc-vimlsp',
     \ 'coc-translator',
+	\ 'coc-tasks',
 	\ 'coc-syntax',
 	\ 'coc-explorer',
 	\ 'coc-marketplace',
+	\ 'coc-diagnostic',
     \ 'coc-tsserver']
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -234,6 +284,8 @@ nnoremap <silent> ,y  :<C-u>CocList -A --normal yank<cr>
 nmap ts <Plug>(coc-translator-p)
 nmap <F3> :CocCommand explorer<CR>
 nmap <LEADER>m :CocList marketplace<CR>
+noremap <silent> <leader>ts :CocList tasks<CR>
+
 "----------------------------------
 
 
@@ -256,12 +308,12 @@ let g:undotree_ShortIndicators = 1
 let g:undotree_WindowLayout = 2
 let g:undotree_DiffpanelHeight = 8
 let g:undotree_SplitWidth = 24
-"function g:Undotree_CustomMap()
-	"nmap <buffer> u <plug>UndotreeNextState
-	"nmap <buffer> e <plug>UndotreePreviousState
-	"nmap <buffer> U 5<plug>UndotreeNextState
-	"nmap <buffer> E 5<plug>UndotreePreviousState
-"endfunc
+function g:Undotree_CustomMap()
+	nmap <buffer> u <plug>UndotreeNextState
+	nmap <buffer> e <plug>UndotreePreviousState
+	nmap <buffer> U 5<plug>UndotreeNextState
+	nmap <buffer> E 5<plug>UndotreePreviousState
+endfunc
 
 
 
@@ -300,3 +352,31 @@ let g:vista#renderer#icons = {
 \   "function": "\uf794",
 \   "variable": "\uf71b",
 \  }
+
+" === rnvimr
+" ===
+let g:rnvimr_ex_enable = 1
+let g:rnvimr_pick_enable = 1
+let g:rnvimr_draw_border = 0
+" let g:rnvimr_bw_enable = 1
+highlight link RnvimrNormal CursorLine
+nnoremap <silent> R :RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
+let g:rnvimr_action = {
+            \ '<C-t>': 'NvimEdit tabedit',
+            \ '<C-x>': 'NvimEdit split',
+            \ '<C-v>': 'NvimEdit vsplit',
+            \ 'gw': 'JumpNvimCwd',
+            \ 'yw': 'EmitRangerCwd'
+            \ }
+let g:rnvimr_layout = { 'relative': 'editor',
+            \ 'width': &columns,
+            \ 'height': &lines,
+            \ 'col': 0,
+            \ 'row': 0,
+            \ 'style': 'minimal' }
+let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+
+
+nnoremap j :AnyJump<CR>
+let g:any_jump_window_width_ratio  = 0.8
+let g:any_jump_window_height_ratio = 0.9
