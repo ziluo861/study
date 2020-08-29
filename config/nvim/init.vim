@@ -57,7 +57,7 @@ set cursorline
 
 
 
-
+"rainbow
 
 let g:rainbow_conf = {
 \	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
@@ -95,15 +95,7 @@ let g:rbpt_loadcmd_toggle = 0
 
 
 
- 
-
-
-let g:EasyMotion_do_mapping = 0                                                             
-let g:EasyMotion_smartcase  = 1  " Turn on case-insensitive feature
-
-
-
-
+"vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1
 let g:cpp_class_decl_highlight = 1
 let g:cpp_experimental_simple_template_highlight = 1
@@ -112,11 +104,12 @@ let g:cpp_concepts_highlight = 1
 
 nmap <F2> :MRU<cr>
 
+"indentLine
 let g:indentLine_char='┆'
 let g:indentLine_enabled = 1
 let g:indentLine_color_gui = '#A4E57E'
 
-
+"nerdcommenter
 let g:NERDCompactSexyComs        = 1
 let g:NERDDefaultAlign           = 'left' 
 let g:NERDAltDelims_java         = 1
@@ -161,29 +154,34 @@ Plug 'chrisbra/Colorizer'
 Plug 'jaxbot/semantic-highlight.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
-Plug 'majutsushi/tagbar'
-Plug 'nathanaelkane/vim-indent-guides'
+"Plug 'majutsushi/tagbar'
+"Plug 'nathanaelkane/vim-indent-guides'
 Plug 'luochen1990/rainbow'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mg979/vim-xtabline'
-
-
+Plug 'easymotion/vim-easymotion'
+Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
+Plug 'liuchengxu/vista.vim'
 call plug#end()
 
+"vim-deus-----
 set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set background=dark
 colors deus
 hi NonText ctermfg=gray guifg=grey10
-"eleline 
+
+"eleline -----
 let g:airline_powerline_fonts = 0
-"illuminated
+
+"illuminated---
 let g:Illuminate_delay = 750
 hi illuminatedWord cterm=undercurl gui=undercurl
-"xtabline
+
+"xtabline-----
 let g:xtabline_settings = {}
 let g:xtabline_settings.enable_mappings = 0
 let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
@@ -238,6 +236,8 @@ nmap <F3> :CocCommand explorer<CR>
 nmap <LEADER>m :CocList marketplace<CR>
 "----------------------------------
 
+
+"fzf -------
 set rtp+=~/.fzf
 noremap <C-p> :FZF<CR>
 noremap <C-f> :Ag<CR>
@@ -247,7 +247,7 @@ command! -bang -nargs=* Ag
   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
   \                 <bang>0)
 
-
+"undotree-----
 
 map L :UndotreeToggle<CR>
 let g:undotree_DiffAutoOpen = 1
@@ -256,14 +256,47 @@ let g:undotree_ShortIndicators = 1
 let g:undotree_WindowLayout = 2
 let g:undotree_DiffpanelHeight = 8
 let g:undotree_SplitWidth = 24
-function g:Undotree_CustomMap()
-	nmap <buffer> u <plug>UndotreeNextState
-	nmap <buffer> e <plug>UndotreePreviousState
-	nmap <buffer> U 5<plug>UndotreeNextState
-	nmap <buffer> E 5<plug>UndotreePreviousState
-endfunc
+"function g:Undotree_CustomMap()
+	"nmap <buffer> u <plug>UndotreeNextState
+	"nmap <buffer> e <plug>UndotreePreviousState
+	"nmap <buffer> U 5<plug>UndotreeNextState
+	"nmap <buffer> E 5<plug>UndotreePreviousState
+"endfunc
 
 
 
-
+"colorizer-----
 let g:colorizer_syntax = 1
+
+"vim-easymotion
+let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_do_shade = 0
+let g:EasyMotion_smartcase = 1
+
+" === tabular
+vmap ga :Tabularize /
+
+" === Leaderf
+let g:Lf_PreviewInPopup = 1
+let g:Lf_PreviewCode = 1
+let g:Lf_ShowHidden = 1
+let g:Lf_ShowDevIcons = 1
+let g:Lf_CommandMap = {
+\   '<C-k>': ['<C-u>'],
+\   '<C-j>': ['<C-e>'],
+\   '<C-]>': ['<C-v>'],
+\   '<C-p>': ['<C-n>'],
+\}
+
+" === Vista.vim
+
+noremap <LEADER>v :Vista coc<CR>
+noremap <c-t> :silent! Vista finder coc<CR>
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'ctags'
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
