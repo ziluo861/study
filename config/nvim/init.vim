@@ -9,15 +9,26 @@ endif
 source ~/.config/nvim/_machine_specific.vim
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
-set hlsearch
+set foldmethod=indent
+set foldlevel=99
+set foldenable
+set formatoptions-=tc
+set splitright
+set splitbelow
+set lazyredraw
+set inccommand=nosplit
+set scrolloff=4
+"set autochdir
 
+set hlsearch
+"set cmdheight=3
 set hidden
 set updatetime=100
 set shortmess+=c
 let mapleader=" "
 exec "nohlsearch"
 noremap ; :
-noremap <LEADER><CR> :nohlsearch<CR>
+noremap <silent> <LEADER><CR> :nohlsearch<CR>
 set backspace=2
 "syntax on
 set relativenumber
@@ -54,6 +65,10 @@ set virtualedit=block
 "filetype off                  " required
 "filetype plugin indent on
 set cursorline
+"set colorcolumn=100
+"set updatetime=100
+"set virtualedit=block
+
 "set cursorcolumn
 "set nocompatible              " be iMproved, required
 
@@ -105,11 +120,6 @@ let g:cpp_experimental_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 
 nmap <F2> :MRU<cr>
-
-"indentLine
-"let g:indentLine_char='┆'
-"let g:indentLine_enabled = 1
-"let g:indentLine_color_gui = '#A4E57E'
 
 "nerdcommenter
 let g:NERDCompactSexyComs        = 1
@@ -177,15 +187,10 @@ call plug#end()
 " === vim-instant-markdown
 let g:instant_markdown_slow = 0
 let g:instant_markdown_autostart = 0
-" let g:instant_markdown_open_to_the_world = 1
-" let g:instant_markdown_allow_unsafe_content = 1
-" let g:instant_markdown_allow_external_content = 0
-" let g:instant_markdown_mathjax = 1
 let g:instant_markdown_autoscroll = 1
 
 " === vim-table-mode
 noremap <LEADER>tm :TableModeToggle<CR>
-"let g:table_mode_disable_mappings = 1
 let g:table_mode_cell_text_object_i_map = 'k<Bar>'
 
 " === Bullets.vim
@@ -197,8 +202,6 @@ let g:bullets_enabled_file_types = [
 			\]
 
 " === vim-markdown-toc
-"let g:vmt_auto_update_on_save = 0
-"let g:vmt_dont_insert_fence = 1
 let g:vmt_cycle_list_item_markers = 1
 let g:vmt_fence_text = 'TOC'
 let g:vmt_fence_closing_text = '/TOC'
@@ -209,9 +212,6 @@ noremap gp :AsyncRun git push<CR>
 
 " === AsyncTasks
 let g:asyncrun_open = 6
-
-
-
 
 "vim-deus-----
 set termguicolors
@@ -245,12 +245,17 @@ let g:coc_global_extensions = [
 	\ 'coc-json',
 	\ 'coc-lists',
 	\ 'coc-css',
+    \ 'coc-tslint-plugin',
+    \ 'coc-stylelint',
 	\ 'coc-vimlsp',
     \ 'coc-translator',
 	\ 'coc-tasks',
 	\ 'coc-syntax',
 	\ 'coc-explorer',
 	\ 'coc-marketplace',
+	\ 'coc-highlight',
+    \ 'coc-pyright',
+	\ 'coc-python',
 	\ 'coc-diagnostic',
     \ 'coc-tsserver']
 inoremap <silent><expr> <TAB>
@@ -263,7 +268,6 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
 inoremap <silent><expr> <c-o> coc#refresh()
 nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
 nmap <silent> <LEADER>= <Plug>(coc-diagnostic-next)
@@ -285,19 +289,40 @@ nmap ts <Plug>(coc-translator-p)
 nmap <F3> :CocCommand explorer<CR>
 nmap <LEADER>m :CocList marketplace<CR>
 noremap <silent> <leader>ts :CocList tasks<CR>
-
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "----------------------------------
 
 
 "fzf -------
 set rtp+=~/.fzf
-noremap <C-p> :FZF<CR>
-noremap <C-f> :Ag<CR>
-command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
+"noremap <C-p> :FZF<CR>
+ noremap <silent> <C-p> :Files<CR>
+noremap <silent> <C-p> :Leaderf file<CR>
+
+let g:fzf_preview_window = 'right:60%'
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+
+function! s:list_buffers()
+  redir => list
+  silent ls
+  redir END
+  return split(list, "\n")
+endfunction
+
+function! s:delete_buffers(lines)
+  execute 'bwipeout' join(map(a:lines, {_, line -> split(line)[0]}))
+endfunction
+
+command! BD call fzf#run(fzf#wrap({
+  \ 'source': s:list_buffers(),
+  \ 'sink*': { lines -> s:delete_buffers(lines) },
+  \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
+\ }))
+
+
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+
 
 "undotree-----
 
@@ -308,12 +333,12 @@ let g:undotree_ShortIndicators = 1
 let g:undotree_WindowLayout = 2
 let g:undotree_DiffpanelHeight = 8
 let g:undotree_SplitWidth = 24
-function g:Undotree_CustomMap()
-	nmap <buffer> u <plug>UndotreeNextState
-	nmap <buffer> e <plug>UndotreePreviousState
-	nmap <buffer> U 5<plug>UndotreeNextState
-	nmap <buffer> E 5<plug>UndotreePreviousState
-endfunc
+"function g:Undotree_CustomMap()
+	"nmap <buffer> u <plug>UndotreeNextState
+	"nmap <buffer> e <plug>UndotreePreviousState
+	"nmap <buffer> U 5<plug>UndotreeNextState
+	"nmap <buffer> E 5<plug>UndotreePreviousState
+"endfunc
 
 
 
@@ -380,3 +405,4 @@ let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 nnoremap j :AnyJump<CR>
 let g:any_jump_window_width_ratio  = 0.8
 let g:any_jump_window_height_ratio = 0.9
+
