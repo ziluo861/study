@@ -183,6 +183,7 @@ Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] 
 Plug 'dkarter/bullets.vim'
 Plug 'kevinhwang91/rnvimr'
 Plug 'pechorin/any-jump.vim'
+
 call plug#end()
 " === vim-instant-markdown
 let g:instant_markdown_slow = 0
@@ -216,7 +217,7 @@ let g:asyncrun_open = 6
 "vim-deus-----
 set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-set background=dark
+"set background=dark
 colors deus
 hi NonText ctermfg=gray guifg=grey10
 
@@ -401,8 +402,6 @@ let g:rnvimr_layout = { 'relative': 'editor',
             \ 'style': 'minimal' }
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
-
+"anyjump
 nnoremap j :AnyJump<CR>
 let g:any_jump_window_width_ratio  = 0.8
-let g:any_jump_window_height_ratio = 0.9
-

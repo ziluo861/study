@@ -21,7 +21,9 @@
 		"cpp",
 		"json",
 		"html",
-		"css"
+		"css",
+		"python",
+		"markdown"
 	],
 	"explorer.width": 38,
 	"explorer.quitOnOpen": true,

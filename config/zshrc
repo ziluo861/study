@@ -22,13 +22,14 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-export EDITOR=/usr/bin/vim
+export EDITOR=/usr/bin/nvim
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 alias cls='clear'
-alias vi='vim'
-#alias cat='bat'
-#alias cat='bat --pager=never'
+alias vi='nvim'
+alias vim='nvim'
+alias cat='bat | lolcat'
+alias cat='bat --pager=never'
 alias ra='ranger'
 eval "$(thefuck --alias fuck)"
 alias pacman='pacman --color=always'
@@ -43,11 +44,11 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color=auto'
 alias sudo='sudo -E'
-alias sc='screenfetch'
+alias sc='screenfetch | lolcat'
 alias top='bashtop'
-alias ne='neofetch'
-
-
+alias ne='neofetch | lolcat'
+alias git='proxychains4 git'
+#google-chrome-stable --proxy-server="socks5://127.0.0.1:51837" 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 export TERM="xterm-256color"
@@ -75,7 +76,7 @@ s=' ' # fix too wide icons
 POWERLEVEL9K_MODE=nerdfont-complete
 POWERLEVEL9K_SHORTEN_STRATEGY=truncate_beginning
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-POWERLEVEL9K_PROMPT_ON_NEWLINE=false 
+POWERLEVEL9K_PROMPT_ON_NEWLINE=false
 POWERLEVEL9K_RPROMPT_ON_NEWLINE=true
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='${P9K_CONTENT} $(whoami | grep -v "^root\$")'
@@ -115,7 +116,7 @@ POWERLEVEL9K_TIME_FORMAT='%D{%Y:%b:%H:%M}'
 POWERLEVEL9K_TIME_BACKGROUND=purple
 POWERLEVEL9K_TIME_FOREGROUND=black
 POWERLEVEL9K_RAM_ICON=
-POWERLEVEL9K_RAM_FOREGROUND=black 
+POWERLEVEL9K_RAM_FOREGROUND=black
 POWERLEVEL9K_RAM_BACKGROUND=yellow
 POWERLEVEL9K_VI_MODE_FOREGROUND=black
 POWERLEVEL9K_VI_COMMAND_MODE_STRING=NORMAL
@@ -132,4 +133,9 @@ POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX='%F{blue}╰%f '
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon root_indicator ssh dir dir_writable vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vi_mode status command_execution_time background_jobs time)
 
-
+export PATH="/home/luo/.gem/ruby/2.7.0/bin:$PATH"
+export GO111MODULE=on
+export GOPROXY=https://goproxy.cn
+export GOPATH=$HOME/go
+export PATH=$PATH:$HOME/go/bin
+#export GOROOT=$HOME/study/go
