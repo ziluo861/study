@@ -18,8 +18,8 @@ set splitbelow
 set lazyredraw
 set inccommand=nosplit
 set scrolloff=4
-"set autochdir
-
+set autochdir
+let &t_ut=''
 set hlsearch
 "set cmdheight=3
 set hidden
@@ -37,8 +37,8 @@ set scrolloff=4
 set showmode
 set nu
 "set bg=dark
-set fileformats=unix,dos
-set fileformat=unix
+"set fileformats=unix,dos
+"set fileformat=unix
 set noexpandtab
 set tabstop=4
 set shiftwidth=4
@@ -46,7 +46,7 @@ set softtabstop=4
 set autoindent 
 set smartindent
 set cindent
-set fileencoding=utf-8
+"set fileencoding=utf-8
 set encoding=utf-8
 set showmatch 
 set signcolumn=yes
@@ -69,7 +69,7 @@ set cursorline
 "set updatetime=100
 "set virtualedit=block
 
-"set cursorcolumn
+set cursorcolumn
 "set nocompatible              " be iMproved, required
 
 
@@ -147,10 +147,8 @@ vmap < S<
 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'mhinz/vim-startify'
-"Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'mbbill/undotree/'
-"Plug 'jaxbot/semantic-highlight.vim'
 Plug 'jceb/vim-orgmode', {'for': ['vim-plug', 'org']}
 Plug 'ryanoasis/vim-devicons'
 Plug 'machakann/vim-highlightedyank'
@@ -158,10 +156,20 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-scripts/mru.vim'
 Plug 'bling/vim-bufferline'
 Plug 'bpietravalle/vim-bolt'
-Plug 'theniceboy/eleline.vim'
+"Plug 'theniceboy/eleline.vim'
+"Plug 'liuchengxu/eleline.vim'
+"Plug 'itchyny/lightline.vim'
+"airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'ojroques/vim-scrollstatus'
+"---
 Plug 'RRethy/vim-illuminate'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'ajmwagar/vim-deus'
+Plug 'rakr/vim-one'
+Plug 'powerline/powerline'
+Plug 'chrisbra/changesPlugin'
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'chrisbra/Colorizer'
@@ -176,14 +184,24 @@ Plug 'mg979/vim-xtabline'
 Plug 'easymotion/vim-easymotion'
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'liuchengxu/vista.vim'
+"Plug 'mg979/vim-visual-multi'
 "markdown
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
 Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
 Plug 'dkarter/bullets.vim'
 Plug 'kevinhwang91/rnvimr'
+"---------
 Plug 'pechorin/any-jump.vim'
-
+Plug 'vim-utils/vim-man'
+" HTML, CSS, JavaScript, PHP, JSON, etc.
+Plug 'elzr/vim-json'
+Plug 'hail2u/vim-css3-syntax', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+Plug 'spf13/PIV', { 'for' :['php', 'vim-plug'] }
+Plug 'pangloss/vim-javascript', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+Plug 'yuezk/vim-js', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+Plug 'jelera/vim-javascript-syntax', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
 call plug#end()
 " === vim-instant-markdown
 let g:instant_markdown_slow = 0
@@ -215,14 +233,26 @@ noremap gp :AsyncRun git push<CR>
 let g:asyncrun_open = 6
 
 "vim-deus-----
-set termguicolors
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-"set background=dark
-colors deus
+"set termguicolors
+"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+if (empty($TMUX))
+  if (has("nvim"))
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
+"colors deus
+let g:one_allow_italics = 1
+set background=dark
+colors one
 hi NonText ctermfg=gray guifg=grey10
 
+
 "eleline -----
-let g:airline_powerline_fonts = 0
+"let g:airline_powerline_fonts = 1
+"let g:eleline_powerline_fonts = 1
 
 "illuminated---
 let g:Illuminate_delay = 750
@@ -233,7 +263,7 @@ hi illuminatedWord cterm=undercurl gui=undercurl
 "xtabline-----
 let g:xtabline_settings = {}
 let g:xtabline_settings.enable_mappings = 0
-let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
+let g:xtabline_settings.tabline_modes = ['tabs', 'buffers','arglist']
 let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
 "noremap to :XTabCycleMode<CR>
@@ -249,6 +279,8 @@ let g:coc_global_extensions = [
     \ 'coc-tslint-plugin',
     \ 'coc-stylelint',
 	\ 'coc-vimlsp',
+	\ 'coc-yaml',
+	\ 'coc-xml',
     \ 'coc-translator',
 	\ 'coc-tasks',
 	\ 'coc-syntax',
@@ -258,6 +290,7 @@ let g:coc_global_extensions = [
     \ 'coc-pyright',
 	\ 'coc-python',
 	\ 'coc-diagnostic',
+    \ 'coc-prettier',
     \ 'coc-tsserver']
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -298,8 +331,8 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 "fzf -------
 set rtp+=~/.fzf
 "noremap <C-p> :FZF<CR>
- noremap <silent> <C-p> :Files<CR>
-noremap <silent> <C-p> :Leaderf file<CR>
+ noremap <silent> <C-f> :Files<CR>
+noremap <silent> <C-f> :Leaderf file<CR>
 
 let g:fzf_preview_window = 'right:60%'
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
@@ -403,5 +436,45 @@ let g:rnvimr_layout = { 'relative': 'editor',
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 "anyjump
-nnoremap j :AnyJump<CR>
-let g:any_jump_window_width_ratio  = 0.8
+nnoremap <LEADER>j :AnyJump<CR>
+
+"changesPlugin
+let g:changes_autocmd=1
+let g:changes_use_icons = 1
+let g:changes_linehi_diff = 0
+"vim-man
+map <leader>m <Plug>(Man)
+"statusline
+"airline 
+let g:airline#extensions#tabline#enabled = 1
+set t_Co=256
+let g:airline_theme="violet"
+"let g:airline_theme="bubblegum"
+let g:airline_powerline_fonts                   = 1 " 使用 powerline 打过补丁的字体
+let g:airline#extensions#tabline#buffer_nr_show = 1 " 显示 buffer 编号
+set laststatus=2
+let g:airline#extensions#tabline#enabled = 1
+
+" 关闭当前 buffer
+noremap <C-x> :w<CR>:bd<CR>
+" <leader>1~9 切到 buffer1~9
+map <leader>1 :b 1<CR>
+map <leader>2 :b 2<CR>
+map <leader>3 :b 3<CR>
+map <leader>4 :b 4<CR>
+map <leader>5 :b 5<CR>
+map <leader>6 :b 6<CR>
+map <leader>7 :b 7<CR>
+map <leader>8 :b 8<CR>
+map <leader>9 :b 9<CR>
+if !exists('g:airline_symbols')
+	let g:airline_symbols = {}
+endif
+let g:airline_left_sep          = '⮀'
+let g:airline_left_alt_sep      = '⮁'
+let g:airline_right_sep         = '⮂'
+let g:airline_right_alt_sep     = '⮃'
+let g:airline_symbols.crypt     = '?'
+let g:airline_symbols.linenr    = '⭡'
+let g:airline_symbols.branch    = '⭠'
+let g:powerline_pycmd="py3"
