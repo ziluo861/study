@@ -28,10 +28,10 @@ export EDITOR=/usr/bin/nvim
 alias cls='clear'
 alias vi='nvim'
 alias vim='nvim'
-alias cat='bat | lolcat'
+alias cat='bat'
 alias cat='bat --pager=never'
 alias ra='ranger'
-eval "$(thefuck --alias fuck)"
+#eval "$(thefuck --alias fuck)"
 alias pacman='pacman --color=always'
 #alias gcc='gcc -fdiagnostics-color=auto'
 #alias g++='g++ -fdiagnostics-color=auto'
@@ -47,15 +47,15 @@ alias sudo='sudo -E'
 alias sc='screenfetch | lolcat'
 alias top='bashtop'
 alias ne='neofetch | lolcat'
-alias git='proxychains4 git'
 #google-chrome-stable --proxy-server="socks5://127.0.0.1:51837" 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-export TERM="xterm-256color"
+export TERM=xterm-256color
 
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs time virtualenv)
+#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs time virtualenv)
 
 setopt no_nomatch
+
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
@@ -130,12 +130,17 @@ POWERLEVEL9K_VI_INSERT_MODE_STRING=
 POWERLEVEL9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL='\uE0B0'
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX='%F{blue}╭─'
 POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX='%F{blue}╰%f '
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon root_indicator ssh dir dir_writable vcs)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=( root_indicator ssh dir dir_writable vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vi_mode status command_execution_time background_jobs time)
 
 export PATH="/home/luo/.gem/ruby/2.7.0/bin:$PATH"
-export GO111MODULE=on
+export GO111MODULE=off
 export GOPROXY=https://goproxy.cn
 export GOPATH=$HOME/go
 export PATH=$PATH:$HOME/go/bin
-#export GOROOT=$HOME/study/go
+export GOROOT=/usr/lib/go
+#nohup /usr/lib/gsd-xsettings > /dev/null 2>&1 &
+
+#autoload -U colors && colors
+#PROMPT="%{$fg[red]%}%n%{$reset_color%}@%{$fg[blue]%}%m %{$fg[yellow]%}%1~ %{$reset_color%}%# "
+#RPROMPT="[%{$fg[yellow]%}%?%{$reset_color%}]"

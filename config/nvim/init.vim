@@ -3,25 +3,25 @@ if empty(glob('~/.config/nvim/_machine_specific.vim'))
 	let has_machine_specific_file = 0
 	silent! exec "!cp ~/.config/nvim/default_configs/_machine_specific_default.vim ~/.config/nvim/_machine_specific.vim"
 endif
-if has_machine_specific_file == 0
-	exec "e ~/.config/nvim/_machine_specific.vim"
-endif
 source ~/.config/nvim/_machine_specific.vim
 let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
+"let g:loaded_python_provider = 0
+"let g:loaded_python3_provider = 0
 set foldmethod=indent
 set foldlevel=99
 set foldenable
 set formatoptions-=tc
+set ruler
 set splitright
 set splitbelow
 set lazyredraw
-set inccommand=nosplit
+set re=0
+set inccommand=split
 set scrolloff=4
 set autochdir
 let &t_ut=''
 set hlsearch
-"set cmdheight=3
 set hidden
 set updatetime=100
 set shortmess+=c
@@ -30,15 +30,14 @@ exec "nohlsearch"
 noremap ; :
 noremap <silent> <LEADER><CR> :nohlsearch<CR>
 set backspace=2
-"syntax on
+syntax on
+set list
+set listchars=tab:\|\ ,trail:▫
+set ttimeoutlen=0
+set notimeout
+set noshowmode
+set number
 set relativenumber
-"set ruler
-set scrolloff=4
-set showmode
-set nu
-"set bg=dark
-"set fileformats=unix,dos
-"set fileformat=unix
 set noexpandtab
 set tabstop=4
 set shiftwidth=4
@@ -46,7 +45,7 @@ set softtabstop=4
 set autoindent 
 set smartindent
 set cindent
-"set fileencoding=utf-8
+set fileencoding=utf-8
 set encoding=utf-8
 set showmatch 
 set signcolumn=yes
@@ -58,16 +57,15 @@ set clipboard=unnamedplus
 set wildmenu
 set showcmd
 set smartcase
+set viewoptions=cursor,folds,slash,unix
+set completeopt=longest,noinsert,menuone,noselect,preview
+set ttyfast
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 set virtualedit=block
-"filetype plugin on
-"filetype indent on
-"filetype off                  " required
-"filetype plugin indent on
 set cursorline
-"set colorcolumn=100
-"set updatetime=100
-"set virtualedit=block
+set colorcolumn=100
+set updatetime=100
+set virtualedit=block
 
 set cursorcolumn
 "set nocompatible              " be iMproved, required
@@ -112,13 +110,6 @@ let g:rbpt_loadcmd_toggle = 0
 
 
 
-"vim-cpp-enhanced-highlight
-let g:cpp_class_scope_highlight = 1
-let g:cpp_class_decl_highlight = 1
-let g:cpp_experimental_simple_template_highlight = 1
-let g:cpp_experimental_template_highlight = 1
-let g:cpp_concepts_highlight = 1
-
 nmap <F2> :MRU<cr>
 
 "nerdcommenter
@@ -156,19 +147,22 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-scripts/mru.vim'
 Plug 'bling/vim-bufferline'
 Plug 'bpietravalle/vim-bolt'
-"Plug 'theniceboy/eleline.vim'
+Plug 'Yggdroot/indentLine'
+Plug 'theniceboy/eleline.vim'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 "Plug 'liuchengxu/eleline.vim'
 "Plug 'itchyny/lightline.vim'
 "airline
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
 Plug 'ojroques/vim-scrollstatus'
 "---
 Plug 'RRethy/vim-illuminate'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'ajmwagar/vim-deus'
-Plug 'rakr/vim-one'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'powerline/powerline'
+Plug 'powerline/fonts'
 Plug 'chrisbra/changesPlugin'
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/asyncrun.vim'
@@ -177,20 +171,25 @@ Plug 'jaxbot/semantic-highlight.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'luochen1990/rainbow'
+"---cpp highlight
+Plug 'sheerun/vim-polyglot'
+Plug 'vim-jp/vim-cpp'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'tpope/vim-surround'
+Plug 'gcmt/wildfire.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'mg979/vim-xtabline'
 Plug 'easymotion/vim-easymotion'
 Plug 'Yggdroot/LeaderF', { 'do': './install.sh' }
 Plug 'liuchengxu/vista.vim'
-"Plug 'mg979/vim-visual-multi'
 "markdown
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle', 'for': ['text', 'markdown', 'vim-plug'] }
 Plug 'mzlogin/vim-markdown-toc', { 'for': ['gitignore', 'markdown', 'vim-plug'] }
+Plug 'airblade/vim-gitgutter'
 Plug 'dkarter/bullets.vim'
 Plug 'kevinhwang91/rnvimr'
+Plug 'airblade/vim-rooter'
 "---------
 Plug 'pechorin/any-jump.vim'
 Plug 'vim-utils/vim-man'
@@ -202,6 +201,13 @@ Plug 'pangloss/vim-javascript', { 'for': ['vim-plug', 'php', 'html', 'javascript
 Plug 'yuezk/vim-js', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
 Plug 'MaxMEllon/vim-jsx-pretty', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
 Plug 'jelera/vim-javascript-syntax', { 'for': ['vim-plug', 'php', 'html', 'javascript', 'css', 'less'] }
+"go
+Plug 'bytbox/golint'
+Plug 'fatih/vim-go'
+" CSharp
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'bsed/vim-csharp'
+Plug 'ctrlpvim/ctrlp.vim' , { 'for': ['cs', 'vim-plug'] } " omnisharp-vim dependency
 call plug#end()
 " === vim-instant-markdown
 let g:instant_markdown_slow = 0
@@ -233,31 +239,29 @@ noremap gp :AsyncRun git push<CR>
 let g:asyncrun_open = 6
 
 "vim-deus-----
-"set termguicolors
-"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-if (empty($TMUX))
-  if (has("nvim"))
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  if (has("termguicolors"))
-    set termguicolors
-  endif
-endif
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors
 "colors deus
-let g:one_allow_italics = 1
+colors dracula
+set t_Co=256
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+let g:deus_termcolors=256
+"let g:one_allow_italics = 1
 set background=dark
-colors one
+"colors one
 hi NonText ctermfg=gray guifg=grey10
 
 
 "eleline -----
-"let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 "let g:eleline_powerline_fonts = 1
 
 "illuminated---
 let g:Illuminate_delay = 750
 hi illuminatedWord cterm=undercurl gui=undercurl
-"let g:Hexokinase_highlighters = ['virtual']
+"hi illuminatedWord cterm=undercurl none
+let g:Hexokinase_highlighters = ['virtual']
 
 
 "xtabline-----
@@ -266,7 +270,7 @@ let g:xtabline_settings.enable_mappings = 0
 let g:xtabline_settings.tabline_modes = ['tabs', 'buffers','arglist']
 let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
-"noremap to :XTabCycleMode<CR>
+noremap to :XTabCycleMode<CR>
 noremap \p :echo expand('%:p')<CR>
 
 
@@ -287,10 +291,12 @@ let g:coc_global_extensions = [
 	\ 'coc-explorer',
 	\ 'coc-marketplace',
 	\ 'coc-highlight',
-    \ 'coc-pyright',
+	\ 'coc-pyright',
 	\ 'coc-python',
 	\ 'coc-diagnostic',
     \ 'coc-prettier',
+	\ 'coc-omnisharp',
+	\ 'coc-go',
     \ 'coc-tsserver']
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
@@ -321,7 +327,7 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nnoremap <silent> ,y  :<C-u>CocList -A --normal yank<cr>
 nmap ts <Plug>(coc-translator-p)
 nmap <F3> :CocCommand explorer<CR>
-nmap <LEADER>m :CocList marketplace<CR>
+nmap <LEADER>e :CocList marketplace<CR>
 noremap <silent> <leader>ts :CocList tasks<CR>
 inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
@@ -330,10 +336,9 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 "fzf -------
 set rtp+=~/.fzf
-"noremap <C-p> :FZF<CR>
- noremap <silent> <C-f> :Files<CR>
+noremap <C-p> :FZF<CR>
+ "noremap <silent> <C-f> :Files<CR>
 noremap <silent> <C-f> :Leaderf file<CR>
-
 let g:fzf_preview_window = 'right:60%'
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 
@@ -353,7 +358,7 @@ command! BD call fzf#run(fzf#wrap({
   \ 'sink*': { lines -> s:delete_buffers(lines) },
   \ 'options': '--multi --reverse --bind ctrl-a:select-all+accept'
 \ }))
-
+noremap <c-d> :BD<CR>
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
 
@@ -398,6 +403,11 @@ let g:Lf_CommandMap = {
 \   '<C-]>': ['<C-v>'],
 \   '<C-p>': ['<C-n>'],
 \}
+let g:Lf_UseVersionControlTool = 0
+let g:Lf_IgnoreCurrentBufferName = 1
+let g:Lf_UseMemoryCache = 0
+let g:Lf_UseCache = 0
+
 
 " === Vista.vim
 
@@ -436,8 +446,11 @@ let g:rnvimr_layout = { 'relative': 'editor',
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 "anyjump
-nnoremap <LEADER>j :AnyJump<CR>
-
+nnoremap J :AnyJump<CR>
+let g:any_jump_list_numbers = 1
+let g:any_jump_window_width_ratio  = 0.8
+let g:any_jump_window_height_ratio = 0.8
+let g:any_jump_window_top_offset   = 3
 "changesPlugin
 let g:changes_autocmd=1
 let g:changes_use_icons = 1
@@ -446,14 +459,14 @@ let g:changes_linehi_diff = 0
 map <leader>m <Plug>(Man)
 "statusline
 "airline 
-let g:airline#extensions#tabline#enabled = 1
-set t_Co=256
-let g:airline_theme="violet"
+"let g:airline#extensions#tabline#enabled = 1
+"set t_Co=256
+"let g:airline_theme="violet"
 "let g:airline_theme="bubblegum"
-let g:airline_powerline_fonts                   = 1 " 使用 powerline 打过补丁的字体
-let g:airline#extensions#tabline#buffer_nr_show = 1 " 显示 buffer 编号
-set laststatus=2
-let g:airline#extensions#tabline#enabled = 1
+"let g:airline_powerline_fonts                   = 1 " 使用 powerline 打过补丁的字体
+"let g:airline#extensions#tabline#buffer_nr_show = 1 " 显示 buffer 编号
+"set laststatus=2
+"let g:airline#extensions#tabline#enabled = 1
 
 " 关闭当前 buffer
 noremap <C-x> :w<CR>:bd<CR>
@@ -467,18 +480,17 @@ map <leader>6 :b 6<CR>
 map <leader>7 :b 7<CR>
 map <leader>8 :b 8<CR>
 map <leader>9 :b 9<CR>
-if !exists('g:airline_symbols')
-	let g:airline_symbols = {}
-endif
-let g:airline_left_sep          = '⮀'
-let g:airline_left_alt_sep      = '⮁'
-let g:airline_right_sep         = '⮂'
-let g:airline_right_alt_sep     = '⮃'
-let g:airline_symbols.crypt     = '?'
-let g:airline_symbols.linenr    = '⭡'
-let g:airline_symbols.branch    = '⭠'
-let g:powerline_pycmd="py3"
-
+"if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"endif
+"let g:airline_left_sep          = '⮀'
+"let g:airline_left_alt_sep      = '⮁'
+"let g:airline_right_sep         = '⮂'
+"let g:airline_right_alt_sep     = '⮃'
+"let g:airline_symbols.crypt     = '?'
+"let g:airline_symbols.linenr    = '⭡'
+"let g:airline_symbols.branch    = '⭠'
+"let g:powerline_pycmd="py3"
 
 
 autocmd BufNewFile *.cpp,*.[ch],*.sh,*.rb,*.java,*.py exec ":call SetTitle()" 
@@ -510,12 +522,12 @@ func SetTitle()
 		call append(line(".")+5, "")
 	endif
 	if expand("%:e") == 'cpp'
-		call append(line(".")+6, "#include<iostream>")
+		call append(line(".")+6, "#include <iostream>")
 		call append(line(".")+7, "using namespace std;")
 		call append(line(".")+8, "")
 	endif
 	if &filetype == 'c'
-		call append(line(".")+6, "#include<stdio.h>")
+		call append(line(".")+6, "#include <stdio.h>")
 		call append(line(".")+7, "")
 	endif
 	if expand("%:e") == 'h'
@@ -530,3 +542,160 @@ func SetTitle()
 	"新建文件后，自动定位到文件末尾
 endfunc 
 autocmd BufNewFile * normal G
+
+
+"C，C++ 按F5编译运行
+map <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+	exec "w"
+	if &filetype == 'c'
+		exec "!g++ % -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'cpp'
+		exec "!g++ % -std=c++11 -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'java' 
+		exec "!javac %" 
+		exec "!time java %<"
+	elseif &filetype == 'sh'
+		:!time bash %
+	elseif &filetype == 'python'
+		exec "!time python3.8 %"
+    elseif &filetype == 'html'
+        exec "!google-chrome-stable % &"
+    elseif &filetype == 'go'
+        exec "!time go run %"
+    elseif &filetype == 'mkd'
+        exec "!~/.vim/markdown.pl % > %.html &"
+        exec "!firefox %.html &"
+	endif
+endfunc
+"C,C++的调试
+map <F8> :call Rungdb()<CR>
+func! Rungdb()
+	exec "w"
+	exec "!g++ % -g -o %<"
+	exec "!gdb ./%<"
+endfunc
+"indentline
+let g:indentLine_char='┆'
+let g:indentLine_enabled = 1
+let g:indentLine_color_gui = 'violet'
+let g:indentLine_color_term = 239
+" === vim-rooter
+" ===
+let g:rooter_patterns = ['__vim_project_root', '.git/']
+let g:rooter_silent_chdir = 1
+
+
+let g:unite_force_overwrite_statusline = 0
+let g:vimfiler_force_overwrite_statusline = 0
+let g:vimshell_force_overwrite_statusline = 0
+
+if !has('gui_running')
+  set t_Co=256
+endif
+set laststatus=2
+
+"scrollstatus
+let g:scrollstatus_size = 15
+
+"vim-cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+let g:cpp_concepts_highlight = 1
+
+"vim-javascript
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_ngdoc = 1
+let g:javascript_plugin_flow = 1
+let g:javascript_conceal_function             = "ƒ"
+let g:javascript_conceal_null                 = "ø"
+let g:javascript_conceal_this                 = "@"
+let g:javascript_conceal_return               = "⇚"
+let g:javascript_conceal_undefined            = "¿"
+let g:javascript_conceal_NaN                  = "ℕ"
+let g:javascript_conceal_prototype            = "¶"
+let g:javascript_conceal_static               = "•"
+let g:javascript_conceal_super                = "Ω"
+let g:javascript_conceal_arrow_function       = "⇒"
+let g:javascript_conceal_noarg_arrow_function = "🞅"
+let g:javascript_conceal_underscore_arrow_function = "🞅"
+set conceallevel=1
+
+"gitgutter
+" let g:gitgutter_signs = 0
+let g:gitgutter_sign_allow_clobber = 0
+let g:gitgutter_map_keys = 0
+let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_preview_win_floating = 1
+let g:gitgutter_sign_added = '▎'
+let g:gitgutter_sign_modified = '░'
+let g:gitgutter_sign_removed = '▏'
+let g:gitgutter_sign_removed_first_line = '▔'
+let g:gitgutter_sign_modified_removed = '▒'
+" autocmd BufWritePost * GitGutter
+nnoremap <LEADER>gf :GitGutterFold<CR>
+nnoremap H :GitGutterPreviewHunk<CR>
+nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
+nnoremap <LEADER>g= :GitGutterNextHunk<CR>
+
+" === vim-go
+" ===
+let g:go_echo_go_info = 0
+let g:go_doc_popup_window = 1
+let g:go_def_mapping_enabled = 0
+let g:go_template_autocreate = 0
+let g:go_textobj_enabled = 0
+let g:go_auto_type_info = 1
+let g:go_def_mapping_enabled = 0
+let g:go_highlight_array_whitespace_error = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_chan_whitespace_error = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_format_strings = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_function_parameters = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_generate_tags = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_space_tab_error = 1
+let g:go_highlight_string_spellcheck = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_trailing_whitespace_error = 1
+let g:go_highlight_types = 1
+let g:go_highlight_variable_assignments = 0
+let g:go_highlight_variable_declarations = 0
+let g:go_doc_keywordprg_enabled = 0
+
+" === OmniSharp
+" ===
+let g:OmniSharp_typeLookupInPreview = 1
+let g:omnicomplete_fetch_full_documentation = 1
+let g:OmniSharp_server_use_mono = 1
+let g:OmniSharp_server_stdio = 1
+let g:OmniSharp_highlight_types = 2
+let g:OmniSharp_selector_ui = 'ctrlp'
+autocmd Filetype cs nnoremap <buffer> gd :OmniSharpPreviewDefinition<CR>
+autocmd Filetype cs nnoremap <buffer> gr :OmniSharpFindUsages<CR>
+autocmd Filetype cs nnoremap <buffer> gy :OmniSharpTypeLookup<CR>
+autocmd Filetype cs nnoremap <buffer> ga :OmniSharpGetCodeActions<CR>
+autocmd Filetype cs nnoremap <buffer> <LEADER>rn :OmniSharpRename<CR><C-N>:res +5<CR>
+sign define OmniSharpCodeActions text=💡
+
+" === CTRLP (Dependency for omnisharp)
+" ===
+let g:ctrlp_map = ''
+let g:ctrlp_cmd = 'CtrlP'
+
+
+if has_machine_specific_file == 0
+	exec "e ~/.config/nvim/_machine_specific.vim"
+endif
+
